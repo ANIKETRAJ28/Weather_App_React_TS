@@ -23,14 +23,15 @@ const initialState : ForecasteDataState = {
             temp_c: 0,
             temp_f: 0,
             is_day: false,
-            chance_of_rain: 0
+            chance_of_rain: 0,
+            hourly: []
         }
     }
 };
 
-export const fetchData = createAsyncThunk("data/fetchData", async () => {
+export const fetchData = createAsyncThunk("data/fetchData", async (data: string) => {
     try {
-        const response = await axiosInstance(`forecast.json?key=${import.meta.env.VITE_API_KEY}&q=Bengaluru&aqi=yes&days=7`);
+        const response = await axiosInstance(`forecast.json?key=${import.meta.env.VITE_API_KEY}&q=${data}&aqi=yes&days=7`);
         // console.log(response);
         return response;
     } catch (error) {
@@ -46,8 +47,8 @@ const forecasteSlice = createSlice({
         builder
         .addCase(fetchData.fulfilled, (state, action) => {
             if(!action.payload) return;
-            state.status = "success";
             console.log(action);
+            state.status = "success";
             const {location, forecast, current} = action.payload.data;
 
             // location
@@ -67,6 +68,16 @@ const forecasteSlice = createSlice({
             });
 
             // current
+            let hourData = forecast?.forecastday[0]?.hour;
+            hourData = hourData.map((hr: any) => {
+                return {
+                    date: hr?.time,
+                    avgtemp_c: hr?.temp_c,
+                    avgtemp_f: hr?.temp_f,
+                    condition: hr?.condition?.text,
+                }
+            });
+            state.data.currentData.hourly = hourData;
             state.data.currentData.aqi = current?.air_quality?.pm2_5;
             state.data.currentData.chance_of_rain = forecast?.forecastday[0]?.day?.daily_chance_of_rain;
             state.data.currentData.humidity = current?.humidity;

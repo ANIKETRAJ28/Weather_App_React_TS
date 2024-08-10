@@ -1,3 +1,5 @@
+import DayForecaste from "./DayForcaste";
+
 export default interface CurrentDayForecaste {
     uv: number,
     wind_kph: number,
@@ -9,5 +11,6 @@ export default interface CurrentDayForecaste {
     temp_c: number,
     temp_f: number,
     is_day: boolean,
-    chance_of_rain: number
+    chance_of_rain: number,
+    hourly: Array<DayForecaste>
 }

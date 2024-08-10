@@ -1,5 +1,5 @@
 import CurrentDayForecaste from "./CurrentDayForcaste";
-import DayForecaste from "./Dayforcaste";
+import DayForecaste from "./DayForcaste";
 
 export default interface ForecasteData {
     location: {
@@ -8,6 +8,6 @@ export default interface ForecasteData {
         country: string,
         localtime: string,
     },
-    dayforecaste: DayForecaste[],
+    dayForecaste: DayForecaste[],
     currentData: CurrentDayForecaste
 }

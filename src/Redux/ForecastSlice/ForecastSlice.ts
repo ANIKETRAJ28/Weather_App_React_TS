@@ -80,7 +80,7 @@ const forecasteSlice = createSlice({
             state.data.currentData.wind_kph = current?.wind_kph
         })
         .addCase(fetchData.pending, (state) => {
-            state.status = "success";
+            state.status = "loading";
         })
     }
 });

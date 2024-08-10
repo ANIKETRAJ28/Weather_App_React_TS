@@ -3,8 +3,13 @@ import { FaCloud } from "react-icons/fa";
 import { BsFillDropletFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
 import DayImage from "../../Assets/Icon/sunny.png";
+import { useSelector } from "react-redux";
+import ReduxState from "../../Interface/ReduxState";
 
 export default function SidebarData() {
+
+    const currentData = useSelector((state: ReduxState) => state.forecaste.data);
+
     return (
         <div className="basis-1/5 flex flex-col justify-between rounded-tl-3xl rounded-bl-3xl p-6" style={{background: `rgba(255, 255, 255, 0.815)`}}>
             <div>
@@ -17,25 +22,25 @@ export default function SidebarData() {
                 <img className="w-[60%] m-4" src={DayImage} alt="" />
                 <div className="flex flex-col justify-center pb-4 border-b-2">
                     <div className="flex items-start text-6xl">
-                        <div>15.7</div>
+                        <div>{currentData.currentData.temp_c}</div>
                         <div className="text-3xl">&deg;C</div>
                     </div>
-                    <span>Thursday, 07:50</span>
+                    <span>{currentData?.location?.localtime}</span>
                 </div>
                 <div className="flex flex-col text-[13px] mt-4">
                     <div className="flex gap-2 items-center">
                         <div><FaCloud/></div>
-                        <div>Partially cloudy</div>
+                        <div>{currentData?.dayForecaste[0]?.condition}</div>
                     </div>
                     <div className="flex gap-2 items-center">
                         <div><BsFillDropletFill/></div>
-                        <div>Perc - 0%</div>
+                        <div>Perc - {currentData?.currentData?.chance_of_rain}%</div>
                     </div>
                 </div>
             </div>
             <div className="flex gap-2 items-center">
                 <div><MdLocationPin/></div>
-                <div>London, England, United Kingdom</div>
+                <div>{currentData?.location?.name}, {currentData?.location?.region}, {currentData?.location?.country}</div>
             </div>
         </div>
     )
